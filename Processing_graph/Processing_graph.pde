@@ -1,3 +1,14 @@
+import ddf.minim.spi.*;
+import ddf.minim.signals.*;
+import ddf.minim.*;
+import ddf.minim.AudioSample;
+import ddf.minim.analysis.*;
+import ddf.minim.ugens.*;
+import ddf.minim.effects.*;
+
+Minim minim;
+AudioSample beatBox;
+
 Graph MyArduinoGraph = new Graph(150, 80, 500, 300, color (200, 20, 20));
 float[] gestureOne=null;
 float[] gestureTwo = null;
@@ -6,8 +17,14 @@ float[] gestureThree = null;
 float[][] gesturePoints = new float[4][2];
 float[] gestureDist = new float[4];
 String[] names = {"Nothing", "Touch", "Grab","In water"};
+
+
+
 void setup() {
 
+  minim = new Minim(this);
+beatBox = minim.loadSample("beatbox.mp3", 2048);
+  
   size(1000, 500); 
 
   MyArduinoGraph.xLabel="Readnumber";
@@ -27,6 +44,7 @@ void setup() {
 
 
 void draw() {
+
 
   background(255);
 
@@ -79,6 +97,26 @@ void draw() {
       {
          currentMax = i;
         currentMaxValue =  gestureDist[i];
+        //DIFFERENT NOTES FOR DIFFERENT STROKES
+        //sc.playNote(69, 100, 2.0);
+        
+  
+        if( currentMax == 0 ){
+          //sc.playNote(60, 100, 2.0);
+          //beatBox.stop();
+        }
+        else if( currentMax == 1 ){
+          //sc.playNote(60, 100, 2.0);
+          //beatBox.stop();
+        }
+        else if( currentMax == 2 ){
+          //sc.playNote(65, 100, 2.0);
+          //beatBox.stop();
+        }
+        else if( currentMax == 3 ){
+          //beatBox.stop();
+          beatBox.trigger();
+        }
       }
     }
     totalDist=totalDist /3;
