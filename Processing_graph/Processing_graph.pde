@@ -18,12 +18,15 @@ float[][] gesturePoints = new float[4][2];
 float[] gestureDist = new float[4];
 String[] names = {"Nothing", "Touch", "Grab","In water"};
 
+int theGesture = 0;
+    boolean isFiring = false;
+
 
 
 void setup() {
 
   minim = new Minim(this);
-beatBox = minim.loadSample("beatbox.mp3", 2048);
+beatBox = minim.loadSample("beatbox.mp3", 10000);
   
   size(1000, 500); 
 
@@ -62,6 +65,8 @@ void draw() {
     MyArduinoGraph.smoothLine(Time3, Voltage3);
     popStyle();
     popMatrix();
+    
+    
 
     float gestureOneDiff =0;
     float gestureTwoDiff =0;
@@ -99,11 +104,12 @@ void draw() {
         currentMaxValue =  gestureDist[i];
         //DIFFERENT NOTES FOR DIFFERENT STROKES
         //sc.playNote(69, 100, 2.0);
-        
+        println(currentMax);
   
         if( currentMax == 0 ){
           //sc.playNote(60, 100, 2.0);
           //beatBox.stop();
+          beatBox.stop();
         }
         else if( currentMax == 1 ){
           //sc.playNote(60, 100, 2.0);
@@ -115,7 +121,17 @@ void draw() {
         }
         else if( currentMax == 3 ){
           //beatBox.stop();
-          beatBox.trigger();
+          println("before");
+          println(isFiring);
+          if(!isFiring){
+            beatBox.trigger();
+            isFiring = true;
+            println("after");
+            println(isFiring);
+          }
+          println("afterafter");
+          println(isFiring);
+          
         }
       }
     }
